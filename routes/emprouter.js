@@ -1,6 +1,6 @@
 var express=require('express')
 var mongoose=require('mongoose')
-var bodyparser=require("body-parser");
+var bodyparser=require("body-parser")
 
 
 var url="mongodb://localhost/sdb"
@@ -13,6 +13,7 @@ mongoose.connect(url,function(err){
     }
 })
 var emp=require('../model/employee')
+
 const router=express.Router();
 
 
@@ -46,5 +47,45 @@ console.log(result)
   
 })
 
+router.get("/edit/:id",function(req,res){
+    var id = req.params.id;
+  
+    emp.find({"eid":req.params.id},function(err,result){
+        if(err) throw err
+        else{
+        console.log(result);
+         res.render('edit',{empdata:result});
+        }
+    }
+    )
+})
+router.post('/up',function(req,res){
+    emp.update({eid:req.body.eid},{$set:{name:req.body.ename,salary:req.body.esal}},function(err,result){
+        if(err) throw err
+        else{
+            emp.find({},function(err,result)
+            {
+                if(err)
+                throw err
+                else{
+                    console.log(result)
+                    res.render('view',{empdata:result})
+                }
+            })
+ 
+        }  
+    })
+})
+router.get("/delete/:id",function(req,res){
+    emp.deleteOne({eid:req.params.id},(err)=>{
+        if(err) throw err;
+        else{
+            console.log("deleted");
+            res.redirect("/emp/view");
+        }
+    })
+})
 
-module .exports=router;
+
+
+module.exports=router;

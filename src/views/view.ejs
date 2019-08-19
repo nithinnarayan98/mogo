@@ -24,10 +24,11 @@
                              <td>
                                     <%= empdata[i].salary %> 
                                  </td>
-                   
+                   <td> <li><a href="/emp/edit/<%= empdata[i].eid %>">edit employee details</a></li></td>
+                                <td><li><a href="/emp/delete/<%= empdata[i].eid %>">delete </a></li></td>
                     </tr>  
        <% } %>
-       
+      
     </table>
 </body>
 </html>
